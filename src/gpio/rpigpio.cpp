@@ -60,7 +60,7 @@ int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
 
 void map_mem(int* mem_fd)
 {
-    std::cout << "Map memory.." << std::cout;
+    std::cout << "Map memory.." << std::endl;
 
     void* map = mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, *mem_fd, GPIO_BASE);
     
