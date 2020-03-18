@@ -1,0 +1,6 @@
+add_subdirectory(gpio)
+add_subdirectory(controlsystem)
+
+add_executable(raspbot_control_system main.cpp)
+target_link_libraries(raspbot_control_system gpiolib)
+target_link_libraries(raspbot_control_system controlsystemlib)
