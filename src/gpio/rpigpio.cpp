@@ -40,7 +40,7 @@ int open_dev_gpiomem_file(int* ptr_mem_fd)
 
 int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
 {
-    int fd = open_dev_mem_file();
+    int fd = open_dev_mem_file(dev_mem_file_name);
     ptr_mem_fd = &fd;
     return fd;
 }
