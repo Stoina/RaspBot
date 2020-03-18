@@ -16,12 +16,10 @@ void initialize_bcm_board(int* mem_fd)
 {
     if (open_dev_mem_file(mem_fd) >= 0)
     {
-        std::cout << "File descriptor pointer: " << mem_fd << " value: " << &mem_fd;
         map_mem(mem_fd);
     }
     else if (open_dev_gpiomem_file(mem_fd) >= 0)
     {
-        std::cout << "File descriptor pointer: " << *mem_fd << " value: " << &mem_fd;
         map_mem(mem_fd);
     }
     else 
@@ -30,34 +28,40 @@ void initialize_bcm_board(int* mem_fd)
     }
 }
 
-int open_dev_gpiomem_file(int* ptr_mem_fd)
-{
-    return open_dev_mem_file("/dev/gpiomem", ptr_mem_fd);
-}
-
 int open_dev_mem_file(int* ptr_mem_fd)
 {
     return open_dev_mem_file("/dev/mem", ptr_mem_fd);
 }
 
+int open_dev_gpiomem_file(int* ptr_mem_fd)
+{
+    return open_dev_mem_file("/dev/gpiomem", ptr_mem_fd);
+}
+
 int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
+{
+    int fd = open_dev_mem_file();
+    ptr_mem_fd = &fd;
+    return fd;
+}
+
+int open_dev_mem_file(const char* dev_mem_file_name)
 {
     std::cout << std::endl;
     std::cout << "Try to open file: " << dev_mem_file_name << "..." << std::endl;
     
     int fd = open(dev_mem_file_name, O_RDWR|O_SYNC);
-    ptr_mem_fd = &fd;
-
-    if (*ptr_mem_fd < 0)
+    
+    if (fd < 0)
     {
-        std::cout << "Error while mapping physical gpio-register in virtual memory. File descriptor: " << *ptr_mem_fd << std::endl;
+        std::cout << "Error while mapping physical gpio-register in virtual memory. File descriptor: " << fd << std::endl;
     }
     else
     {
-        std::cout << "Successfully open file: " << dev_mem_file_name << " Descriptor: " << *ptr_mem_fd << std::endl;
+        std::cout << "Successfully open file: " << dev_mem_file_name << " Descriptor: " << fd << std::endl;
     }
     
-    return *ptr_mem_fd;
+    return fd;
 }
 
 void map_mem(int* mem_fd)
