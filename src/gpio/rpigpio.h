@@ -32,5 +32,7 @@
 int main();
 void hello_gpio();
 void initialize_bcm_board();
+int open_dev_gpiomem_file(int* ptr_mem_fd);
 int open_dev_mem_file(int* ptr_mem_fd);
+int open_dev_mem_file(char* dev_mem_file_name, int* ptr_mem_fd);
 void map_mem(int* mem_fd);
