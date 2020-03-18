@@ -14,11 +14,13 @@
 
 void initialize_bcm_board(int* mem_fd)
 {
-    if (open_dev_mem_file(mem_fd) >= 0)
+    int fd = -1;
+
+    if ((fd = open_dev_mem_file(mem_fd)) >= 0)
     {
         map_mem(mem_fd);
     }
-    else if (open_dev_gpiomem_file(mem_fd) >= 0)
+    else if ((fd = open_dev_gpiomem_file(mem_fd)) >= 0)
     {
         map_mem(mem_fd);
     }
@@ -64,13 +66,13 @@ int open_mem_file(const char* dev_mem_file_name)
     return fd;
 }
 
-void map_mem(int* mem_fd)
+void map_mem(int mem_fd, int* ptr_mem_fd)
 {
     std::cout << std::endl;
     std::cout << "Map memory.." << std::endl;
-    std::cout << "File descriptor pointer: " << *mem_fd << " value: " << &mem_fd;
+    std::cout << "File descriptor pointer: " << mem_fd << " value: " << &mem_fd;
 
-    void* map = mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, *mem_fd, GPIO_BASE);
+    void* map = mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, mem_fd, GPIO_BASE);
     
     if (map == (__caddr_t)-1)
     {
