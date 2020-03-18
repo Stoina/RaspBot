@@ -30,6 +30,7 @@
 #endif
 
 int main();
+void hello_gpio();
 void initialize_bcm_board();
 int open_dev_mem_file(int* ptr_mem_fd);
 void map_mem(int* mem_fd);
