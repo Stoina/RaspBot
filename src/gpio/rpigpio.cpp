@@ -40,6 +40,7 @@ int open_dev_mem_file(int* ptr_mem_fd)
 
 int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
 {
+    std::cout << std::endl;
     std::cout << "Try to open file: " << dev_mem_file_name << "..." << std::endl;
     
     int mem_fd = open(dev_mem_file_name, O_RDWR|O_SYNC);
@@ -51,7 +52,7 @@ int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
     }
     else
     {
-        std::cout << "File: " << dev_mem_file_name << " Descriptor: " << *ptr_mem_fd << std::endl;
+        std::cout << "Successfully open file: " << dev_mem_file_name << " Descriptor: " << *ptr_mem_fd << std::endl;
     }
     
     return mem_fd;
