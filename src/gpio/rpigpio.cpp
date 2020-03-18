@@ -43,10 +43,8 @@ int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
     std::cout << std::endl;
     std::cout << "Try to open file: " << dev_mem_file_name << "..." << std::endl;
     
-    int mem_fd = open(dev_mem_file_name, O_RDWR|O_SYNC);
-    ptr_mem_fd  = &mem_fd;
-
-    if (mem_fd < 0)
+    ptr_mem_fd = &open(dev_mem_file_name, O_RDWR|O_SYNC);
+    if (*ptr_mem_fd < 0)
     {
         std::cout << "Error while mapping physical gpio-register in virtual memory. File descriptor: " << *ptr_mem_fd << std::endl;
     }
@@ -55,11 +53,12 @@ int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
         std::cout << "Successfully open file: " << dev_mem_file_name << " Descriptor: " << *ptr_mem_fd << std::endl;
     }
     
-    return mem_fd;
+    return *ptr_mem_fd;
 }
 
 void map_mem(int* mem_fd)
 {
+    std::cout << std::endl;
     std::cout << "Map memory.." << std::endl;
     std::cout << "File descriptor pointer: " << mem_fd << " value: " << *mem_fd;
 
