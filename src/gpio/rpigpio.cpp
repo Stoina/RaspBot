@@ -18,11 +18,11 @@ void initialize_bcm_board(int* mem_fd)
 
     if ((fd = open_dev_mem_file(mem_fd)) >= 0)
     {
-        map_mem(mem_fd);
+        map_mem(fd, mem_fd);
     }
     else if ((fd = open_dev_gpiomem_file(mem_fd)) >= 0)
     {
-        map_mem(mem_fd);
+        map_mem(fd, mem_fd);
     }
     else 
     {
