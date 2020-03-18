@@ -21,7 +21,7 @@ void initialize_bcm_board(int* mem_fd)
     }
     else if (open_dev_gpiomem_file(mem_fd) >= 0)
     {
-        std::cout << "File descriptor pointer: " << mem_fd << " value: " << &mem_fd;
+        std::cout << "File descriptor pointer: " << *mem_fd << " value: " << &mem_fd;
         map_mem(mem_fd);
     }
     else 
