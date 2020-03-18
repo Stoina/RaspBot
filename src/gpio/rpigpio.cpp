@@ -16,10 +16,12 @@ void initialize_bcm_board(int* mem_fd)
 {
     if (open_dev_mem_file(mem_fd) >= 0)
     {
+        std::cout << "File descriptor pointer: " << mem_fd << " value: " << *mem_fd;
         map_mem(mem_fd);
     }
     else if (open_dev_gpiomem_file(mem_fd) >= 0)
     {
+        std::cout << "File descriptor pointer: " << mem_fd << " value: " << *mem_fd;
         map_mem(mem_fd);
     }
     else 
@@ -45,7 +47,7 @@ int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
     
     int fd = open(dev_mem_file_name, O_RDWR|O_SYNC);
     ptr_mem_fd = &fd;
-    
+
     if (*ptr_mem_fd < 0)
     {
         std::cout << "Error while mapping physical gpio-register in virtual memory. File descriptor: " << *ptr_mem_fd << std::endl;
