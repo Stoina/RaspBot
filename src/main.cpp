@@ -5,7 +5,12 @@
 
 int main() 
 {
-    initialize_bcm_board();
+    std::cout << "Starting raspbot-control-system";
+
+    int* mem_fd;
+    
+    initialize_bcm_board(mem_fd);
+    unmap_memory(mem_fd);
 
     return 0;
 }

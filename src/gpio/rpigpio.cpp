@@ -12,9 +12,8 @@
 
 #endif
 
-void initialize_bcm_board()
+void initialize_bcm_board(int* mem_fd)
 {
-    int* mem_fd;
     if (open_dev_mem_file(mem_fd) >= 0)
     {
         map_mem(mem_fd);
@@ -72,4 +71,9 @@ void map_mem(int* mem_fd)
     {
         std::cout << "Successfully mapped memory" << std::endl;
     }
+}
+
+void unmap_memory(int* mem_fd)
+{
+    munmap(mem_fd, BLOCK_SIZE);
 }

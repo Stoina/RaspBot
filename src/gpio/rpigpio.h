@@ -30,8 +30,9 @@
 #endif
 
 int main();
-void initialize_bcm_board();
+void initialize_bcm_board(int* mem_fd)
 int open_dev_gpiomem_file(int* ptr_mem_fd);
 int open_dev_mem_file(int* ptr_mem_fd);
 int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd);
 void map_mem(int* mem_fd);
+void unmap_memory(int* mem_fd);
