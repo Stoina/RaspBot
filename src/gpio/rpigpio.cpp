@@ -12,11 +12,6 @@
 
 #endif
 
-void hello_gpio()
-{
-    std::cout << "Hello from rpigpio" << std::endl;
-}
-
 void initialize_bcm_board()
 {
     int* mem_fd;
@@ -46,7 +41,7 @@ int open_dev_mem_file(int* ptr_mem_fd)
 
 int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
 {
-    std::cout << "Try to open: " << dev_mem_file_name << "..." << std::endl;
+    std::cout << "Try to open file: " << dev_mem_file_name << "..." << std::endl;
     
     int mem_fd = open(dev_mem_file_name, O_RDWR|O_SYNC);
     if (mem_fd < 0)
@@ -55,7 +50,7 @@ int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
     }
     else
     {
-        std::cout << "File: " << dev_mem_file_name << "Descriptor: " << mem_fd << std::endl;
+        std::cout << "File: " << dev_mem_file_name << " Descriptor: " << mem_fd << std::endl;
     }
 
     ptr_mem_fd  = &mem_fd;
@@ -65,6 +60,8 @@ int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
 
 void map_mem(int* mem_fd)
 {
+    std::cout << "Map memory.." << std::cout;
+
     void* map = mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, *mem_fd, GPIO_BASE);
     
     if (map == (__caddr_t)-1)
