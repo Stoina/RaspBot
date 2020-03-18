@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -11,6 +12,11 @@
 #include <sys/mman.h>
 
 #endif
+
+void hello_gpio()
+{
+    std::cout << "Hello from rpigpio" << std::endl;
+}
 
 void initialize_bcm_board()
 {
