@@ -44,18 +44,21 @@ int open_dev_mem_file(int* ptr_mem_fd)
     return open_dev_mem_file("/dev/mem", ptr_mem_fd);
 }
 
-int open_dev_mem_file(char* dev_mem_file_name, int* ptr_mem_fd)
+int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
 {
     std::cout << "Try to open: " << dev_mem_file_name << "..." << std::endl;
     
     int mem_fd = open(dev_mem_file_name, O_RDWR|O_SYNC);
-
-    ptr_mem_fd  = &mem_fd;
-    
     if (mem_fd < 0)
     {
-        std::cout << "Error while mapping physical gpio-register in virtual memory" << std::endl;
+        std::cout << "Error while mapping physical gpio-register in virtual memory. File descriptor: " << mem_fd << std::endl;
     }
+    else
+    {
+        std::cout << "File: " << dev_mem_file_name << "Descriptor: " << mem_fd << std::endl;
+    }
+
+    ptr_mem_fd  = &mem_fd;
 
     return mem_fd;
 }
