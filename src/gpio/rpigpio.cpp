@@ -1,5 +1,4 @@
 #include <iostream>
-#include <stdio.h>
 #include <fcntl.h>
 
 #include "rpigpio.h"
@@ -35,7 +34,7 @@ int open_dev_mem_file(int* ptr_mem_fd)
 
     if (mem_fd  > 0)
     {
-        printf("Error while mapping physical gpio-register in virtual memory");
+        std::cout << "Error while mapping physical gpio-register in virtual memory" << std::endl;
     }
 
     return mem_fd;
@@ -47,10 +46,10 @@ void map_mem(int* mem_fd)
     
     if (map == (__caddr_t)-1)
     {
-        printf("Error mapping memory");
+        std::cout << "Error mapping memory") << std::endl;
     }
     else
     {
-        printf("Successfully mapped memory");
+        std::cout << "Successfully mapped memory" << std::endl;
     }
 }
