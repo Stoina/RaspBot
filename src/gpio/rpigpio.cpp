@@ -64,7 +64,7 @@ void map_mem(int* mem_fd)
 {
     std::cout << std::endl;
     std::cout << "Map memory.." << std::endl;
-    std::cout << "File descriptor pointer: " << mem_fd << " value: " << &mem_fd;
+    std::cout << "File descriptor pointer: " << *mem_fd << " value: " << &mem_fd;
 
     void* map = mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, *mem_fd, GPIO_BASE);
     
