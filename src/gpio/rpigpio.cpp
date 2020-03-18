@@ -30,22 +30,22 @@ void initialize_bcm_board(int* mem_fd)
 
 int open_dev_mem_file(int* ptr_mem_fd)
 {
-    return open_dev_mem_file("/dev/mem", ptr_mem_fd);
+    return open_mem_file("/dev/mem", ptr_mem_fd);
 }
 
 int open_dev_gpiomem_file(int* ptr_mem_fd)
 {
-    return open_dev_mem_file("/dev/gpiomem", ptr_mem_fd);
+    return open_mem_file("/dev/gpiomem", ptr_mem_fd);
 }
 
-int open_dev_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
+int open_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
 {
-    int fd = open_dev_mem_file(dev_mem_file_name);
+    int fd = open_mem_file(dev_mem_file_name);
     ptr_mem_fd = &fd;
     return fd;
 }
 
-int open_dev_mem_file(const char* dev_mem_file_name)
+int open_mem_file(const char* dev_mem_file_name)
 {
     std::cout << std::endl;
     std::cout << "Try to open file: " << dev_mem_file_name << "..." << std::endl;
