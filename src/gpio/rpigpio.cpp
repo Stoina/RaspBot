@@ -100,9 +100,9 @@ void set_test_pin_on(void* map)
 
     std::cout << "Pin register: " << pin_register;
     std::cout << "Bit position: " << bit_position;
-    std::cout << "Bit mask: " << GPIO_OUT << bit_position;
+    std::cout << "Bit mask: " << (u_int32_t)(GPIO_OUT << bit_position);;
     
-    *(pin_register) = GPIO_OUT << bit_position;
+    *(pin_register) = (u_int32_t)(GPIO_OUT << bit_position);
 }
 
 void set_test_pin_output_high()
