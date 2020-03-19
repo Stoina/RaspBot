@@ -12,17 +12,24 @@
 
 #endif
 
-void initialize_bcm_board(int* mem_fd)
+struct GPIOBoard 
+{
+    int addr_base;
+    int* mem_fd;
+    void* memory_map;
+}
+
+void* initialize_bcm_board(int* mem_fd)
 {
     int fd = -1;
 
     if ((fd = open_dev_mem_file(mem_fd)) >= 0)
     {
-        map_mem(fd, mem_fd);
+        return map_mem(fd, mem_fd);
     }
     else if ((fd = open_dev_gpiomem_file(mem_fd)) >= 0)
     {
-        map_mem(fd, mem_fd);
+        return map_mem(fd, mem_fd);
     }
     else 
     {
@@ -60,17 +67,16 @@ int open_mem_file(const char* dev_mem_file_name)
     }
     else
     {
-        std::cout << "Successfully open file: " << dev_mem_file_name << " Descriptor: " << fd << std::endl;
+        std::cout << "File opened successfully: " << dev_mem_file_name << " Descriptor: " << fd << std::endl;
     }
     
     return fd;
 }
 
-void map_mem(int mem_fd, int* ptr_mem_fd)
+void* map_mem(int mem_fd, int* ptr_mem_fd)
 {
     std::cout << std::endl;
     std::cout << "Map memory.." << std::endl;
-    std::cout << "File descriptor pointer: " << mem_fd << " value: " << &mem_fd;
 
     void* map = mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, mem_fd, GPIO_BASE);
     
@@ -82,9 +88,19 @@ void map_mem(int mem_fd, int* ptr_mem_fd)
     {
         std::cout << "Successfully mapped memory" << std::endl;
     }
+
+    return map;
 }
 
-void unmap_memory(int* mem_fd)
+void set_test_pin_on(void* map)
 {
-    munmap(mem_fd, BLOCK_SIZE);
+    int pin = 2;
+    int pin_register = map + (2 / 10);
+    int bit_position =  2* 3;
+
+    std::cout << "Pin register: " << pin_register;
+    std::cout << "Bit position: " << bit_position;
+    std::cout << "Bit mask: " << GPIO_OUT << bit_position;
+    
+    *(pin_register) = GPIO_OUT << bit_position;
 }

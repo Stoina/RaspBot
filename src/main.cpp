@@ -6,11 +6,10 @@
 int main() 
 {
     std::cout << "Starting raspbot-control-system" << std::endl;
-
+    
     int* mem_fd;
-
-    initialize_bcm_board(mem_fd);
-    unmap_memory(mem_fd);
-
+    void* map = initialize_bcm_board(mem_fd);
+    set_test_pin_on(map);
+    
     return 0;
 }
