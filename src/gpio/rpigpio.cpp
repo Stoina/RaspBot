@@ -12,13 +12,6 @@
 
 #endif
 
-struct GPIOBoard 
-{
-    int addr_base;
-    int* mem_fd;
-    void* memory_map;
-}
-
 void* initialize_bcm_board(int* mem_fd)
 {
     int fd = -1;
@@ -95,15 +88,16 @@ void* map_mem(int mem_fd, int* ptr_mem_fd)
 void set_test_pin_on(void* map)
 {
     uint32_t pin = 2;
-    uint32_t pin_register = ((uint32_t)(map) + (2 / 10));
+    uint32_t* map_register = (uint32_t*)map;
+    uint32_t pin_register = (*map_register + (2 / 10));
     uint32_t bit_position =  2* 3;
-    uint32_t bit_mask = (uint32_t)(GPIO_OUT << bit_position);
+    int bit_mask = (int)(GPIO_OUT << bit_position);
 
     std::cout << "Pin register: " << pin_register;
     std::cout << "Bit position: " << bit_position;
     std::cout << "Bit mask: " << bit_mask;
     
-    *(pin_register) = bit_mask;
+    //*(pin_register) = bit_mask;
 }
 
 void set_test_pin_output_high()

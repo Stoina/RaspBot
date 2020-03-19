@@ -35,5 +35,6 @@ int open_dev_gpiomem_file(int* ptr_mem_fd);
 int open_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd);
 int open_mem_file(const char* dev_mem_file_name);
 void* map_mem(int mem_fd, int* ptr_mem_fd);
+void set_test_pin_on(void* map);
 void set_test_pin_output_high();
 void set_test_pin_output_low();
