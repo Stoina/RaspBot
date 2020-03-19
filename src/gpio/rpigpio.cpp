@@ -94,10 +94,10 @@ void* map_mem(int mem_fd, int* ptr_mem_fd)
 
 void set_test_pin_on(void* map)
 {
-    int pin = 2;
-    int pin_register = (uint32_t)(map + (2 / 10));
-    int bit_position =  2* 3;
-    int bit_mask = (uint32_t)(GPIO_OUT << bit_position);
+    uint32_t pin = 2;
+    uint32_t pin_register = ((uint32_t)(map) + (2 / 10)));
+    uint32_t bit_position =  2* 3;
+    uint32_t bit_mask = (uint32_t)(GPIO_OUT << bit_position);
 
     std::cout << "Pin register: " << pin_register;
     std::cout << "Bit position: " << bit_position;
