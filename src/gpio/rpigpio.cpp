@@ -95,14 +95,15 @@ void* map_mem(int mem_fd, int* ptr_mem_fd)
 void set_test_pin_on(void* map)
 {
     int pin = 2;
-    int pin_register = map + (2 / 10);
+    int pin_register = (uint32_t)(map + (2 / 10));
     int bit_position =  2* 3;
+    int bit_mask = (uint32_t)(GPIO_OUT << bit_position);
 
     std::cout << "Pin register: " << pin_register;
     std::cout << "Bit position: " << bit_position;
-    std::cout << "Bit mask: " << (u_int32_t)(GPIO_OUT << bit_position);;
+    std::cout << "Bit mask: " << bit_mask;
     
-    *(pin_register) = (u_int32_t)(GPIO_OUT << bit_position);
+    *(pin_register) = bit_mask;
 }
 
 void set_test_pin_output_high()
