@@ -104,3 +104,13 @@ void set_test_pin_on(void* map)
     
     *(pin_register) = GPIO_OUT << bit_position;
 }
+
+void set_test_pin_output_high()
+{
+
+}
+
+void set_test_pin_output_low()
+{
+    
+}

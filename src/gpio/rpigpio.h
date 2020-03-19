@@ -29,10 +29,11 @@
 
 #endif
 
-void initialize_bcm_board(int* mem_fd);
+void* initialize_bcm_board(int* mem_fd);
 int open_dev_mem_file(int* ptr_mem_fd);
 int open_dev_gpiomem_file(int* ptr_mem_fd);
 int open_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd);
 int open_mem_file(const char* dev_mem_file_name);
-void map_mem(int mem_fd, int* ptr_mem_fd);
-void unmap_memory(int* mem_fd);
+void* map_mem(int mem_fd, int* ptr_mem_fd);
+void set_test_pin_output_high();
+void set_test_pin_output_low();
