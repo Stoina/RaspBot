@@ -1,1 +1,1 @@
-add_library(gpiolib rpigpio.cpp)
+add_library(gpiolib gpioboard.cpp)
