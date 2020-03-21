@@ -94,7 +94,8 @@ int GPIOBoard::map_memory()
 
 int GPIOBoard::setup_pin(int gpio_func, int gpio_pin)
 {
-    *((uint32_t*)gpio_mmap + get_GPSEL_register(gpio_pin)) = (uint32_t)(gpio_func << (gpio_pin * 3));
+    *((uint32_t*)gpio_mmap + get_GPSEL_register(gpio_pin)) ^= (uint32_t)(gpio_func << (gpio_pin * 3));
+
     return 0;
 }
 
@@ -102,7 +103,7 @@ int GPIOBoard::set_pin_low(int gpio_pin)
 {
     std::cout << "Set pin " << gpio_pin << " low...";
 
-    *((uint32_t*)gpio_mmap + get_GPCLR_register(gpio_pin)) = 1 << (gpio_pin & 31);
+    *((uint32_t*)gpio_mmap + get_GPCLR_register(gpio_pin)) ^= 1 << (gpio_pin & 31);
 
     return 0;
 }
@@ -111,7 +112,7 @@ int GPIOBoard::set_pin_high(int gpio_pin)
 {
     std::cout << "Set pin " << gpio_pin << " high...";
 
-    *((uint32_t*)gpio_mmap + get_GPSET_register(gpio_pin)) = 1 << (gpio_pin & 31);
+    *((uint32_t*)gpio_mmap + get_GPSET_register(gpio_pin)) ^= 1 << (gpio_pin & 31);
     
     return 0;
 }
