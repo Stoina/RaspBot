@@ -1,15 +1,21 @@
 #include <iostream>
-#include "gpio/rpigpio.h"
+
+#include "gpio/gpioboard.h"
+
 #include "controlsystem/engine.h"
 #include "controlsystem/ultrasonic_sensor.h"
 
 int main() 
 {
-    std::cout << "Starting raspbot-control-system" << std::endl;
+    std::cout << "Starting raspbot-control-system..." << std::endl;
+
+    GPIOBoard board;
     
-    int* mem_fd;
-    void* map = initialize_bcm_board(mem_fd);
-    set_test_pin_on(map);
-    
+    if (board.setup_board() >= 0)
+    {
+        board.setup_pin(GPIO_FUNC_OUT, 2);
+        board.set_pin_state(2, GPIO_STATE_HIGH);
+    }
+
     return 0;
 }
