@@ -1,0 +1,153 @@
+void* initialize_bcm_board(int* mem_fd)
+{
+    int fd = -1;
+
+    void* mapped_memory;
+    if ((fd = open_dev_mem_file(mem_fd)) >= 0)
+    {
+        mapped_memory = map_mem(fd, mem_fd);
+    }
+    else if ((fd = open_dev_gpiomem_file(mem_fd)) >= 0)
+    {
+        mapped_memory = map_mem(fd, mem_fd);
+    }
+    else 
+    {
+        std::cout << "Error occurred while opening file..." << std::endl;
+    }
+
+    return mapped_memory;
+}
+
+int open_dev_mem_file(int* ptr_mem_fd)
+{
+    return open_mem_file("/dev/mem", ptr_mem_fd);
+}
+
+int open_dev_gpiomem_file(int* ptr_mem_fd)
+{
+    return open_mem_file("/dev/gpiomem", ptr_mem_fd);
+}
+
+int open_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd)
+{
+    int fd = open_mem_file(dev_mem_file_name);
+    ptr_mem_fd = &fd;
+    return fd;
+}
+
+int open_mem_file(const char* dev_mem_file_name)
+{
+    std::cout << std::endl;
+    std::cout << "Try to open file: " << dev_mem_file_name << "..." << std::endl;
+    
+    int fd = open(dev_mem_file_name, O_RDWR|O_SYNC);
+    
+    if (fd < 0)
+    {
+        std::cout << "Error while mapping physical gpio-register in virtual memory. File descriptor: " << fd << std::endl;
+    }
+    else
+    {
+        std::cout << "File opened successfully: " << dev_mem_file_name << " Descriptor: " << fd << std::endl;
+    }
+    
+    return fd;
+}
+
+void* map_mem(int mem_fd, int* ptr_mem_fd)
+{
+    std::cout << std::endl;
+    std::cout << "Map memory.." << std::endl;
+
+    void* map = mmap(0, BLOCK_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, mem_fd, GPIO_BASE);
+    
+    if (map == (__caddr_t)-1)
+    {
+        std::cout << "Error mapping memory" << std::endl;
+    }
+    else
+    {
+        std::cout << "Successfully mapped memory" << std::endl;
+    }
+
+    return map;
+}
+
+void set_test_pin_on(void* map)
+{
+    uint32_t pin = 2;
+    uint32_t* map_register = (uint32_t*)map;
+    uint32_t pin_register = ((uint32_t)map_register + (pin / 10));
+    uint32_t bit_position =  pin * 3;
+    uint32_t bit_mask = (uint32_t)(GPIO_OUT << bit_position);
+
+    std::cout << "Map: " << map_register << std::endl;
+    std::cout << "Pin register: " << std::hex << (uint32_t*)map + (2 / 10) << std::endl;
+    std::cout << "Bit position: " << bit_position  << std::endl;
+    std::cout << "Bit mask in bits: " << std::bitset<32>(bit_mask) << std::endl; 
+
+    *((uint32_t*)map + (pin / 10)) = (uint32_t)bit_mask;
+
+    set_test_pin_output_low(map);
+}
+
+void set_test_pin_output_high(void* map)
+{
+    std::cout << "Set pin to high.." << std::endl;
+    std::cout << "Pin register: " << std::hex << (uint32_t*)map + 7 << std::endl;
+    std::cout << "Bit mask in bits: " << std::bitset<32>(1 << (2 & 31)) << std::endl; 
+
+    *((uint32_t*)map + 7) = 1 << (2 & 31);
+}
+
+void set_test_pin_output_low(void* map)
+{
+    std::cout << "Set pin to low.." << std::endl;
+    std::cout << "Pin register: " << std::hex << (uint32_t*)map + 10 << std::endl;
+    std::cout << "Bit mask in bits: " << std::bitset<32>(1 << (2 & 31)) << std::endl; 
+    
+    *((uint32_t*)map + 10) = 1 << (2 & 31);
+}
+
+-- header
+#ifndef BLOCK_SIZE
+#define BLOCK_SIZE (4*1024)
+#endif
+
+#ifndef BCM2708_GPIO
+#define BCM2708_GPIO 0x20000000
+#endif
+
+// virtual address from BCM2835 CPU
+// in the documentation the address is 0x7E.... but because the MMU we must change to 0x20....
+#ifndef BCM2835_GPIO
+#define BCM2835_GPIO 0x200000
+#endif
+
+#define GPIO_BASE (BCM2708_GPIO + BCM2835_GPIO)
+
+// define gpio select functions in 3-Bit
+#ifndef GPIO_SEL_FUNCTIONS
+#define GPIO_SEL_FUNCTIONS
+
+#define GPIO_FUNC_IN  0b000
+#define GPIO_FUNC_OUT 0b001
+#define GPIO_FUNC_ALTERNATE_0 0b100
+#define GPIO_FUNC_ALTERNATE_1 0b101
+#define GPIO_FUNC_ALTERNATE_2 0b110
+#define GPIO_FUNC_ALTERNATE_3 0b111
+#define GPIO_FUNC_ALTERNATE_4 0b011
+#define GPIO_FUNC_ALTERNATE_5 0b010
+
+#endif 
+
+void* initialize_bcm_board(int* mem_fd);
+int open_dev_mem_file(int* ptr_mem_fd);
+int open_dev_gpiomem_file(int* ptr_mem_fd);
+int open_mem_file(const char* dev_mem_file_name, int* ptr_mem_fd);
+int open_mem_file(const char* dev_mem_file_name);
+void* map_mem(int mem_fd, int* ptr_mem_fd);
+void set_test_pin_on(void* map);
+void set_test_pin_output_high(void* map);
+void set_test_pin_output_low(void* map);
