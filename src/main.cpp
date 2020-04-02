@@ -9,13 +9,22 @@ int main()
 {
     std::cout << "Starting raspbot-control-system..." << std::endl;
 
-    GPIOBoard board;
-    
-    if (board.setup_board() >= 0)
+    try { 
+        GPIOBoard board;
+        if (board.setup_board() >= 0)
+        {
+            board.setup_pin(9, GPIO_FUNC_OUT);
+            board.set_pin_low(9);
+        }
+        else
+        {
+            std::cout << "Starting raspbot-control system failed..." << std::endl;
+        }
+    } 
+    catch (const std::exception& e)
     {
-        board.setup_pin(GPIO_FUNC_OUT, 2);
-        board.set_pin_state(2, GPIO_STATE_HIGH);
+        std::cout << "Starting raspbot-control system failed..." << std::endl;
     }
-
+    
     return 0;
 }

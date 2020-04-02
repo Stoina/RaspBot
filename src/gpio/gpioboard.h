@@ -1,19 +1,3 @@
-#ifndef BLOCK_SIZE
-#define BLOCK_SIZE (4*1024)
-#endif
-
-#ifndef BCM2708_GPIO
-#define BCM2708_GPIO 0x20000000
-#endif
-
-// virtual address from BCM2835 CPU
-// in the documentation the address is 0x7E.... but because the MMU we must change to 0x20....
-#ifndef BCM2835_GPIO
-#define BCM2835_GPIO 0x200000
-#endif
-
-#define GPIO_BASE (BCM2708_GPIO + BCM2835_GPIO)
-
 // define gpio select functions in 3-Bit
 #ifndef GPIO_SEL_FUNCTIONS
 #define GPIO_SEL_FUNCTIONS
@@ -41,7 +25,8 @@ class GPIOBoard {
     private:
         int mem_base;
         int mem_fd;
-        void* gpio_mmap;
+        int gpio_base;
+        unsigned int* gpio_mmap;
 
         int get_GPSEL_register(int gpio_pin);
         int get_GPSET_register(int gpio_pin);
@@ -59,7 +44,7 @@ class GPIOBoard {
         int open_mem_file(const char* mem_file_name);
         int map_memory();
         
-        int setup_pin(int gpio_func, int gpio_pin);
+        int setup_pin(int gpio_pin, int gpio_func);
         
         int set_pin_low(int gpio_pin);
         int set_pin_high(int gpio_pin);
