@@ -31,6 +31,7 @@ class GPIOBoard {
         int get_GPSEL_register(int gpio_pin);
         int get_GPSET_register(int gpio_pin);
         int get_GPCLR_register(int gpio_pin);
+        int get_GPLEV_register(int gpio_pin);
         
     public:
         GPIOBoard();
@@ -49,4 +50,5 @@ class GPIOBoard {
         int set_pin_low(int gpio_pin);
         int set_pin_high(int gpio_pin);
         int set_pin_state(int gpio_pin, int gpio_state);
+        int read_pin_state(int gpio_pin);
 };
