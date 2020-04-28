@@ -9,7 +9,7 @@ class UltrasonicSensor
     private: 
         GPIOBoard* gpio_board;
         int trigger_pin;
-        
+        int echo_pin;
 
     public:
         UltrasonicSensor();

@@ -11,6 +11,12 @@ int main()
         {
             UltrasonicSensor ultrasonicSensor;
             ultrasonicSensor.initialize_board(&board, 21, 20);
+
+            while(true)
+            {
+                std::cout << ultrasonicSensor.read_distance() << std::endl;
+                sleep(3);
+            }
         }
         else
         {
